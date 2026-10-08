@@ -1,0 +1,53 @@
+{"Time":"2026-10-08T16:22:45.186877822Z","Action":"start","Package":"github.com/projectdiscovery/dnsx/internal/testutils"}
+{"Time":"2026-10-08T16:22:45.192408354Z","Action":"run","Package":"github.com/projectdiscovery/dnsx/internal/testutils","Test":"TestAuditShellExpansion"}
+{"Time":"2026-10-08T16:22:45.192431021Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/testutils","Test":"TestAuditShellExpansion","Output":"=== RUN   TestAuditShellExpansion\n"}
+{"Time":"2026-10-08T16:22:45.205815985Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/testutils","Test":"TestAuditShellExpansion","Output":"    audit_security_test.go:9: CONFIRMED: target shell expansion created local harmless marker\n"}
+{"Time":"2026-10-08T16:22:45.205864979Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/testutils","Test":"TestAuditShellExpansion","Output":"--- PASS: TestAuditShellExpansion (0.01s)\n"}
+{"Time":"2026-10-08T16:22:45.205872118Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/internal/testutils","Test":"TestAuditShellExpansion","Elapsed":0.01}
+{"Time":"2026-10-08T16:22:45.205893296Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/testutils","Output":"PASS\n"}
+{"Time":"2026-10-08T16:22:45.206138809Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/testutils","Output":"ok  \tgithub.com/projectdiscovery/dnsx/internal/testutils\t0.017s\n"}
+{"Time":"2026-10-08T16:22:45.206155973Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/internal/testutils","Elapsed":0.019}
+{"Time":"2026-10-08T16:22:45.319165551Z","Action":"start","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test"}
+{"Time":"2026-10-08T16:22:45.321592731Z","Action":"run","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test","Test":"TestAuditSameLengthMismatch"}
+{"Time":"2026-10-08T16:22:45.321614294Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test","Test":"TestAuditSameLengthMismatch","Output":"=== RUN   TestAuditSameLengthMismatch\n"}
+{"Time":"2026-10-08T16:22:45.346668486Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test","Test":"TestAuditSameLengthMismatch","Output":"    audit_security_test.go:8: CONFIRMED: differing one-line outputs accepted as equal\n"}
+{"Time":"2026-10-08T16:22:45.346839692Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test","Test":"TestAuditSameLengthMismatch","Output":"--- PASS: TestAuditSameLengthMismatch (0.03s)\n"}
+{"Time":"2026-10-08T16:22:45.346848501Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test","Test":"TestAuditSameLengthMismatch","Elapsed":0.03}
+{"Time":"2026-10-08T16:22:45.346853394Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test","Output":"PASS\n"}
+{"Time":"2026-10-08T16:22:45.347065003Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test","Output":"ok  \tgithub.com/projectdiscovery/dnsx/cmd/functional-test\t0.028s\n"}
+{"Time":"2026-10-08T16:22:45.347082889Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/cmd/functional-test","Elapsed":0.028}
+{"Time":"2026-10-08T16:22:53.032116356Z","Action":"start","Package":"github.com/projectdiscovery/dnsx/libs/dnsx"}
+{"Time":"2026-10-08T16:22:53.16404811Z","Action":"run","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditDoHSelfSigned"}
+{"Time":"2026-10-08T16:22:53.164086707Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditDoHSelfSigned","Output":"=== RUN   TestAuditDoHSelfSigned\n"}
+{"Time":"2026-10-08T16:22:53.210936878Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditDoHSelfSigned","Output":"2026/10/08 16:22:53 http: TLS handshake error from 127.0.0.1:39888: remote error: tls: bad certificate\n"}
+{"Time":"2026-10-08T16:22:53.218074454Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditDoHSelfSigned","Output":"    audit_security_test.go:8: CONFIRMED: actual DNSX accepted DNS answer over untrusted self-signed HTTPS\n"}
+{"Time":"2026-10-08T16:22:53.22227329Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditDoHSelfSigned","Output":"--- PASS: TestAuditDoHSelfSigned (0.06s)\n"}
+{"Time":"2026-10-08T16:22:53.222303237Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditDoHSelfSigned","Elapsed":0.06}
+{"Time":"2026-10-08T16:22:53.222311931Z","Action":"run","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditVersionTLS"}
+{"Time":"2026-10-08T16:22:53.222317789Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditVersionTLS","Output":"=== RUN   TestAuditVersionTLS\n"}
+{"Time":"2026-10-08T16:22:53.225165545Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditVersionTLS","Output":"    audit_security_test.go:12: CONFIRMED: version-check HTTP client accepts untrusted self-signed HTTPS\n"}
+{"Time":"2026-10-08T16:22:53.225263598Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditVersionTLS","Output":"--- PASS: TestAuditVersionTLS (0.00s)\n"}
+{"Time":"2026-10-08T16:22:53.225281307Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditVersionTLS","Elapsed":0}
+{"Time":"2026-10-08T16:22:53.225484233Z","Action":"run","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditTempRace"}
+{"Time":"2026-10-08T16:22:53.225489807Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditTempRace","Output":"=== RUN   TestAuditTempRace\n"}
+{"Time":"2026-10-08T16:22:53.22584134Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditTempRace","Output":"    audit_security_test.go:20: CONFIRMED controlled interleaving: helper deletes temp path, replacement symlink is followed by os.Create; natural race timing not measured\n"}
+{"Time":"2026-10-08T16:22:53.225993657Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditTempRace","Output":"--- PASS: TestAuditTempRace (0.00s)\n"}
+{"Time":"2026-10-08T16:22:53.226016714Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Test":"TestAuditTempRace","Elapsed":0}
+{"Time":"2026-10-08T16:22:53.22603458Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Output":"PASS\n"}
+{"Time":"2026-10-08T16:22:53.22793364Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Output":"ok  \tgithub.com/projectdiscovery/dnsx/libs/dnsx\t0.196s\n"}
+{"Time":"2026-10-08T16:22:53.227948399Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/libs/dnsx","Elapsed":0.196}
+{"Time":"2026-10-08T16:22:55.930433259Z","Action":"start","Package":"github.com/projectdiscovery/dnsx/internal/runner"}
+{"Time":"2026-10-08T16:22:55.999185194Z","Action":"run","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditZeroThreads"}
+{"Time":"2026-10-08T16:22:55.999226558Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditZeroThreads","Output":"=== RUN   TestAuditZeroThreads\n"}
+{"Time":"2026-10-08T16:22:55.999250851Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditZeroThreads","Output":"    audit_security_test.go:7: CONFIRMED: zero threads starts no resolution workers\n"}
+{"Time":"2026-10-08T16:22:55.999260693Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditZeroThreads","Output":"--- PASS: TestAuditZeroThreads (0.00s)\n"}
+{"Time":"2026-10-08T16:22:55.999263497Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditZeroThreads","Elapsed":0}
+{"Time":"2026-10-08T16:22:55.99926868Z","Action":"run","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputSymlink"}
+{"Time":"2026-10-08T16:22:55.999273819Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputSymlink","Output":"=== RUN   TestAuditOutputSymlink\n"}
+{"Time":"2026-10-08T16:22:55.999334241Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputSymlink","Output":"AUDIT_APPEND\n"}
+{"Time":"2026-10-08T16:22:55.99935292Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputSymlink","Output":"    audit_security_test.go:14: CONFIRMED behavior: output append follows symlink; operator-controlled path, not a standalone remote vulnerability\n"}
+{"Time":"2026-10-08T16:22:55.999409617Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputSymlink","Output":"--- PASS: TestAuditOutputSymlink (0.00s)\n"}
+{"Time":"2026-10-08T16:22:55.999427945Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputSymlink","Elapsed":0}
+{"Time":"2026-10-08T16:22:55.999468165Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Output":"PASS\n"}
+{"Time":"2026-10-08T16:22:56.001454392Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Output":"ok  \tgithub.com/projectdiscovery/dnsx/internal/runner\t0.071s\n"}
+{"Time":"2026-10-08T16:22:56.001474895Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/internal/runner","Elapsed":0.071}

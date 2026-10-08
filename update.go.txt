@@ -1,0 +1,79 @@
+118: func GetToolVersionCallback(toolName, version string) func() (string, error) {
+119: 	return func() (string, error) {
+120: 		updateURL := fmt.Sprintf(UpdateCheckEndpoint, toolName) + "?" + GetpdtmParams(version)
+121: 		if DefaultHttpClient == nil {
+122: 			// not needed but as a precaution to avoid nil panics
+123: 			DefaultHttpClient = http.DefaultClient
+124: 			DefaultHttpClient.Timeout = VersionCheckTimeout
+125: 		}
+126: 		resp, err := DefaultHttpClient.Get(updateURL)
+127: 		if err != nil {
+128: 			return "", errkit.Wrapf(err, "http Get %v failed", updateURL)
+129: 		}
+130: 		if resp.Body != nil {
+131: 			defer func() {
+132: 				_ = resp.Body.Close()
+133: 			}()
+134: 		}
+135: 		if resp.StatusCode != 200 {
+136: 			return "", errkit.Newf("version check failed expected status 200 but got %v for GET %v", resp.StatusCode, updateURL)
+137: 		}
+138: 		body, err := io.ReadAll(resp.Body)
+139: 		if err != nil {
+140: 			return "", errkit.Wrapf(err, "failed to get response body of GET %v", updateURL)
+141: 		}
+142: 		var toolDetails Tool
+143: 		if err := json.Unmarshal(body, &toolDetails); err != nil {
+144: 			return "", errkit.Wrapf(err, "failed to unmarshal %v", string(body))
+145: 		}
+146: 		if toolDetails.Version == "" {
+147: 			msg := fmt.Sprintf("something went wrong, expected version string but got empty string for GET `%v` response `%v`", updateURL, string(body))
+148: 			return "", errkit.Newf("%s", msg)
+149: 		}
+150: 		return toolDetails.Version, nil
+151: 	}
+152: }
+153: 
+154: // GetpdtmParams returns encoded query parameters sent to update check endpoint
+155: func GetpdtmParams(version string) string {
+156: 	params := &url.Values{}
+157: 	os := runtime.GOOS
+158: 	if runtime.GOOS == "linux" {
+159: 		// be more specific
+160: 		os = GetOSVendor()
+161: 	}
+162: 	params.Add("os", os)
+163: 	params.Add("arch", runtime.GOARCH)
+164: 	params.Add("go_version", runtime.Version())
+165: 	params.Add("v", version)
+166: 	params.Add("machine_id", GetMachineID()) // for rate limiting
+167: 	params.Add("utm_source", getUtmSource())
+168: 	return params.Encode()
+169: }
+170: 
+171: // GetMachineID return a unique identifier that is unique to the machine
+172: // it is a sha256 hashed value with pdtm as salt
+173: func GetMachineID() string {
+174: 	machineId, err := machineid.ProtectedID("pdtm")
+175: 	if err != nil {
+176: 		return getCustomMID()
+177: 	}
+178: 	if machineId == "" {
+179: 		return getCustomMID()
+180: 	}
+181: 	return machineId
+182: }
+183: 
+184: // Deprecated: use GetToolVersionCheckCallback instead
+185: func GetVersionCheckCallback(toolName string) func() (string, error) {
+186: 	return GetToolVersionCallback(toolName, "")
+187: }
+188: 
+189: func init() {
+190: 	DefaultHttpClient = &http.Client{
+191: 		Timeout: VersionCheckTimeout,
+192: 		Transport: &http.Transport{
+193: 			Proxy:           http.ProxyFromEnvironment,
+194: 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+195: 		},
+196: 	}

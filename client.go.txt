@@ -1,0 +1,19 @@
+68: func NewWithOptions(options Options) (*Client, error) {
+69: 	if err := options.Validate(); err != nil {
+70: 		return nil, err
+71: 	}
+72: 	parsedBaseResolvers := parseResolvers(sliceutil.Dedupe(options.BaseResolvers))
+73: 	var knownHosts map[string][]string
+74: 	if options.Hostsfile {
+75: 		knownHosts, _ = hostsfile.ParseDefault()
+76: 	}
+77: 
+78: 	if options.MaxPerCNAMEFollows == 0 {
+79: 		options.MaxPerCNAMEFollows = DefaultMaxPerCNAMEFollows
+80: 	}
+81: 
+82: 	httpClient := doh.NewHttpClient(
+83: 		doh.WithTimeout(options.Timeout),
+84: 		doh.WithInsecureSkipVerify(),
+85: 		doh.WithProxy(options.Proxy), // no-op if empty
+86: 	)

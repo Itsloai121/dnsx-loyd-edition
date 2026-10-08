@@ -1,0 +1,13 @@
+20: // WithInsecureSkipVerify sets the InsecureSkipVerify option for the TLS config
+21: func WithInsecureSkipVerify() ClientOption {
+22: 	return func(c *http.Client) {
+23: 		transport, ok := c.Transport.(*http.Transport)
+24: 		if !ok {
+25: 			transport = &http.Transport{}
+26: 			c.Transport = transport
+27: 		}
+28: 		if transport.TLSClientConfig == nil {
+29: 			transport.TLSClientConfig = &tls.Config{}
+30: 		}
+31: 		transport.TLSClientConfig.InsecureSkipVerify = true
+32: 	}

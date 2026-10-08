@@ -1,0 +1,10 @@
+{"Time":"2026-10-08T16:24:16.689376493Z","Action":"start","Package":"github.com/projectdiscovery/dnsx/internal/runner"}
+{"Time":"2026-10-08T16:24:16.813744755Z","Action":"run","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputErrorDiscarded"}
+{"Time":"2026-10-08T16:24:16.813825915Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputErrorDiscarded","Output":"=== RUN   TestAuditOutputErrorDiscarded\n"}
+{"Time":"2026-10-08T16:24:16.81394226Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputErrorDiscarded","Output":"AUDIT_OUTPUT\n"}
+{"Time":"2026-10-08T16:24:16.813974939Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputErrorDiscarded","Output":"    audit_security_test.go:20: CONFIRMED: actual output handler returns normally when deferred flush to /dev/full fails\n"}
+{"Time":"2026-10-08T16:24:16.813995408Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputErrorDiscarded","Output":"--- PASS: TestAuditOutputErrorDiscarded (0.00s)\n"}
+{"Time":"2026-10-08T16:24:16.81402169Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/internal/runner","Test":"TestAuditOutputErrorDiscarded","Elapsed":0}
+{"Time":"2026-10-08T16:24:16.814050755Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Output":"PASS\n"}
+{"Time":"2026-10-08T16:24:16.815679899Z","Action":"output","Package":"github.com/projectdiscovery/dnsx/internal/runner","Output":"ok  \tgithub.com/projectdiscovery/dnsx/internal/runner\t0.126s\n"}
+{"Time":"2026-10-08T16:24:16.815706366Z","Action":"pass","Package":"github.com/projectdiscovery/dnsx/internal/runner","Elapsed":0.126}

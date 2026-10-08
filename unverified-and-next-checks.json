@@ -1,0 +1,23 @@
+{
+  "UNVERIFIED": [
+    "Real deployed binary/compiler/OS and authenticated upstream provenance.",
+    "GitHub action implementation, org/repository token defaults, branch protections, runner isolation, release signing and actual published image provenance.",
+    "Production network egress/TLS interception/OS symlink policy; cross-user exploitation not demonstrated.",
+    "Complete historical secret detection, credential validity/revocation and cloud secret stores.",
+    "Remediated release behavior; proposed fixes are not applied or closure-tested."
+  ],
+  "FILES_NEEDED": [
+    "Exact deployed binary with checksum, compiler/build manifest and OS details.",
+    "Pinned/reviewed third-party action source or immutable action SHAs; repository/organization permissions and branch protection configuration.",
+    "A sample successful release run and associated commit/tag/image digest, plus Docker build logs.",
+    "Runtime filesystem umask, temp-directory ownership/mount policy and protected_symlinks settings.",
+    "Patched dependency versions and source changes for closure testing; no production secrets should be sent."
+  ],
+  "HARDENING_NOTES": [
+    "Run the tool/container as an unprivileged identity with a private temp directory.",
+    "Document output as untrusted DNS data; use JSON for downstream structured handling.",
+    "Keep automatic update checks disabled in strictly controlled audit runs until TLS validation is repaired.",
+    "Define explicit input-size/scan-duration/resource budgets if exposed through a service wrapper.",
+    "Use verified release provenance and retained logs when results support compliance/audit decisions."
+  ]
+}

@@ -1,0 +1,39 @@
+[
+  {
+    "test": "no_input",
+    "time_utc": "2026-10-08T16:23:53.551347+00:00",
+    "args": [],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "test": "zero_threads",
+    "time_utc": "2026-10-08T16:23:53.716804+00:00",
+    "args": [
+      "-l",
+      "example.test",
+      "-r",
+      "127.0.0.1:9",
+      "-t",
+      "0"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "test": "output_full",
+    "time_utc": "2026-10-08T16:23:59.871005+00:00",
+    "args": [
+      "-l",
+      "localhost",
+      "-hostsfile",
+      "-o",
+      "/dev/full"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "[WRN] 1 domains failed to resolve (consider increasing -retry or reducing -threads)\n"
+  }
+]

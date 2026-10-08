@@ -1,0 +1,355 @@
+[
+  {
+    "id": "F01",
+    "title": "DNS-over-HTTPS accepts untrusted certificates",
+    "cwe": "CWE-295",
+    "severity": "Medium",
+    "category": "Security defect",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": "libs/dnsx/dnsx.go",
+        "lines": "99-114",
+        "quoted_code": "99: func New(options Options) (*DNSX, error) {\n100: \tretryablednsOptions := retryabledns.Options{\n101: \t\tBaseResolvers: options.BaseResolvers,\n102: \t\tMaxRetries:    options.MaxRetries,\n103: \t\tHostsfile:     options.Hostsfile,\n104: \t\tProxy:         options.Proxy,\n105: \t\tTimeout:       options.Timeout,\n106: \t}\n107: \n108: \tdnsClient, err := retryabledns.NewWithOptions(retryablednsOptions)\n109: \tif err != nil {\n110: \t\treturn nil, err\n111: \t}\n112: \tdnsClient.TCPFallback = true\n113: \tdnsx := &DNSX{dnsClient: dnsClient, Options: &options}\n114: \tif options.OutputCDN {"
+      },
+      {
+        "file": "retryabledns@v1.0.116/client.go",
+        "lines": "82-86",
+        "quoted_code": "82: \thttpClient := doh.NewHttpClient(\n83: \t\tdoh.WithTimeout(options.Timeout),\n84: \t\tdoh.WithInsecureSkipVerify(),\n85: \t\tdoh.WithProxy(options.Proxy), // no-op if empty\n86: \t)"
+      },
+      {
+        "file": "retryabledns@v1.0.116/doh/util.go",
+        "lines": "28-31",
+        "quoted_code": "28: \t\tif transport.TLSClientConfig == nil {\n29: \t\t\ttransport.TLSClientConfig = &tls.Config{}\n30: \t\t}\n31: \t\ttransport.TLSClientConfig.InsecureSkipVerify = true"
+      }
+    ],
+    "source": "Operator-selected DoH resolver; DNS data returned over an attacker-intercepted connection.",
+    "sink": "HTTPS transport with InsecureSkipVerify=true.",
+    "path": [
+      "-r doh:https://... enters Options.Resolvers",
+      "runner.New -> dnsx.New -> retryabledns.NewWithOptions",
+      "DoH client disables TLS chain/hostname validation",
+      "QueryOne/QueryMultiple accepts DNS answers from that connection"
+    ],
+    "why_exploitable": "An on-path party can impersonate the selected DoH service with an untrusted certificate and forge DNS results. This affects the encrypted DoH mode; UDP defaults are a separate, intentionally unencrypted mode.",
+    "preconditions": "DoH is explicitly configured; attacker can intercept traffic or impersonate its endpoint. No additional certificate pinning was found on this path.",
+    "challenge_verdict": "CONFIRMED. Default Go HTTPS rejects the local self-signed server; actual DNSX accepted its 192.0.2.123 answer. DoT is a different transport and was not flagged.",
+    "how_to_verify": "Run TestAuditDoHSelfSigned. It uses httptest.NewTLSServer on loopback and audit.test; baseline HTTPS must reject the certificate, and the patched DNSX must reject it too.",
+    "observed_at_utc": "2026-10-08T16:22:53.218074+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "--- retryabledns/client.go\n+++ retryabledns/client.go\n@@\n-\t\tdoh.WithInsecureSkipVerify(),\n"
+  },
+  {
+    "id": "F02",
+    "title": "Automatic version-check client disables TLS verification",
+    "cwe": "CWE-295",
+    "severity": "Low",
+    "category": "Security defect",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": "internal/runner/options.go",
+        "lines": "261-270",
+        "quoted_code": "261: \tif !options.DisableUpdateCheck {\n262: \t\tlatestVersion, err := updateutils.GetToolVersionCallback(\"dnsx\", version)()\n263: \t\tif err != nil {\n264: \t\t\tif options.Verbose {\n265: \t\t\t\tgologger.Error().Msgf(\"dnsx version check failed: %v\", err.Error())\n266: \t\t\t}\n267: \t\t} else {\n268: \t\t\tgologger.Info().Msgf(\"Current dnsx version %v %v\", version, updateutils.GetVersionDescription(version, latestVersion))\n269: \t\t}\n270: \t}"
+      },
+      {
+        "file": "utils@v0.11.6/update/update.go",
+        "lines": "118-126",
+        "quoted_code": "118: func GetToolVersionCallback(toolName, version string) func() (string, error) {\n119: \treturn func() (string, error) {\n120: \t\tupdateURL := fmt.Sprintf(UpdateCheckEndpoint, toolName) + \"?\" + GetpdtmParams(version)\n121: \t\tif DefaultHttpClient == nil {\n122: \t\t\t// not needed but as a precaution to avoid nil panics\n123: \t\t\tDefaultHttpClient = http.DefaultClient\n124: \t\t\tDefaultHttpClient.Timeout = VersionCheckTimeout\n125: \t\t}\n126: \t\tresp, err := DefaultHttpClient.Get(updateURL)"
+      },
+      {
+        "file": "utils@v0.11.6/update/update.go",
+        "lines": "189-196",
+        "quoted_code": "189: func init() {\n190: \tDefaultHttpClient = &http.Client{\n191: \t\tTimeout: VersionCheckTimeout,\n192: \t\tTransport: &http.Transport{\n193: \t\t\tProxy:           http.ProxyFromEnvironment,\n194: \t\t\tTLSClientConfig: &tls.Config{InsecureSkipVerify: true},\n195: \t\t},\n196: \t}"
+      }
+    ],
+    "source": "Remote version metadata and network path to api.pdtm.sh.",
+    "sink": "updateutils.DefaultHttpClient.Get.",
+    "path": [
+      "ParseOptions performs version check unless -duc",
+      "GetToolVersionCallback requests HTTPS version metadata",
+      "DefaultHttpClient accepts untrusted TLS certificates"
+    ],
+    "why_exploitable": "An on-path party can forge the reported latest version or observe transmitted machine/tool metadata. This is not evidence of replacement-binary execution: the release downloader uses a different path.",
+    "preconditions": "Automatic version check enabled (default), and attacker controls the network path or a configured interception proxy.",
+    "challenge_verdict": "DOWNGRADED to Low. Self-signed acceptance reproduced. The insecure client is documented as version-check-only, so a claim of arbitrary malicious update installation through this client was rejected.",
+    "how_to_verify": "Run TestAuditVersionTLS against a loopback self-signed server. After changing the TLS configuration, this request must fail certificate verification. Use -duc as an immediate workaround.",
+    "observed_at_utc": "2026-10-08T16:22:53.225165+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "--- utils/update/update.go\n+++ utils/update/update.go\n@@\n-\t\t\tTLSClientConfig: &tls.Config{InsecureSkipVerify: true},\n+\t\t\tTLSClientConfig: &tls.Config{InsecureSkipVerify: false},\n"
+  },
+  {
+    "id": "F03",
+    "title": "Test helpers turn target and arguments into shell code",
+    "cwe": "CWE-78",
+    "severity": "Medium",
+    "category": "Conditional test-harness risk",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": "internal/testutils/integration.go",
+        "lines": "11-24",
+        "quoted_code": "11: func RunDnsxAndGetResults(question string, debug bool, extra ...string) ([]string, error) {\n12: \tcmd := exec.Command(\"bash\", \"-c\")\n13: \tcmdLine := `echo \"` + question + `\" | ./dnsx `\n14: \tcmdLine += strings.Join(extra, \" \")\n15: \tif debug {\n16: \t\tcmdLine += \" -debug\"\n17: \t\tcmd.Stderr = os.Stderr\n18: \t} else {\n19: \t\tcmdLine += \" -silent\"\n20: \t}\n21: \n22: \tcmd.Args = append(cmd.Args, cmdLine)\n23: \n24: \tdata, err := cmd.Output()"
+      },
+      {
+        "file": "internal/testutils/integration.go",
+        "lines": "37-49",
+        "quoted_code": "37: func RunDnsxBinaryAndGetResults(target string, dnsxBinary string, debug bool, args []string) ([]string, error) {\n38: \tcmd := exec.Command(\"bash\", \"-c\")\n39: \tcmdLine := fmt.Sprintf(`echo %s | %s `, target, dnsxBinary)\n40: \tcmdLine += strings.Join(args, \" \")\n41: \tif debug {\n42: \t\tcmdLine += \" -debug\"\n43: \t\tcmd.Stderr = os.Stderr\n44: \t} else {\n45: \t\tcmdLine += \" -silent\"\n46: \t}\n47: \n48: \tcmd.Args = append(cmd.Args, cmdLine)\n49: \tdata, err := cmd.Output()"
+      },
+      {
+        "file": "cmd/functional-test/main.go",
+        "lines": "64-77",
+        "quoted_code": "64: func runIndividualTestCase(testcase string) error {\n65: \tparts := strings.Fields(testcase)\n66: \n67: \tvar finalArgs []string\n68: \tvar target string\n69: \tif len(parts) > 1 {\n70: \t\tfinalArgs = parts[2:]\n71: \t\ttarget = parts[0]\n72: \t}\n73: \tmainOutput, err := testutils.RunDnsxBinaryAndGetResults(target, *mainDnsxBinary, debug, finalArgs)\n74: \tif err != nil {\n75: \t\treturn errors.Wrap(err, \"could not run dnsx main test\")\n76: \t}\n77: \tdevOutput, err := testutils.RunDnsxBinaryAndGetResults(target, *devDnsxBinary, debug, finalArgs)"
+      }
+    ],
+    "source": "Functional testcase target/arguments and selected binary path; helper question/extra arguments.",
+    "sink": "exec.Command(\"bash\", \"-c\") executing constructed text.",
+    "path": [
+      "-testcases selects a file",
+      "runIndividualTestCase parses target and arguments",
+      "RunDnsxBinaryAndGetResults inserts them into cmdLine",
+      "bash evaluates command substitution/metacharacters"
+    ],
+    "why_exploitable": "If this harness is fed less-trusted test data, a target containing shell syntax executes commands with the harness permissions. A harmless marker-file reproduction succeeded. The production DNS CLI does not call these test helpers.",
+    "preconditions": "A lower-trust party must control testcase data/arguments reaching the helper in a more-privileged harness. Committed trusted test literals alone do not establish an attacker boundary; ordinary PR builds already execute PR code.",
+    "challenge_verdict": "CONFIRMED sink behavior, conditional security impact. Downgraded from production/remote RCE; no fork-secret leak or privileged CI exploitation was demonstrated.",
+    "how_to_verify": "Run TestAuditShellExpansion. It invokes a local stub, not the DNS tool, and creates only a temporary AUDIT_OK marker. After replacing the shell with argv execution, the marker must not appear.",
+    "observed_at_utc": "2026-10-08T16:22:45.205815+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "--- internal/testutils/integration.go\n+++ internal/testutils/integration.go\n@@\n-\tcmd := exec.Command(\"bash\", \"-c\")\n-\tcmdLine := fmt.Sprintf(`echo %s | %s `, target, dnsxBinary)\n-\tcmdLine += strings.Join(args, \" \")\n+\targv := append([]string{}, args...)\n+\tmode := \"-silent\"\n+\tif debug { mode = \"-debug\" }\n+\targv = append(argv, mode)\n+\tcmd := exec.Command(dnsxBinary, argv...)\n+\tcmd.Stdin = strings.NewReader(target + \"\\n\")\n+\tif debug { cmd.Stderr = os.Stderr }\n# Remove the old cmdLine/debug/Args block; apply the same pattern\n# to RunDnsxAndGetResults using binary \"./dnsx\". Remove fmt import.\n"
+  },
+  {
+    "id": "F04",
+    "title": "Stdin temporary-file creation loses atomicity and privacy",
+    "cwe": "CWE-377 / CWE-367",
+    "severity": "Medium",
+    "category": "Conditional local filesystem risk",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": "internal/runner/runner.go",
+        "lines": "304-322",
+        "quoted_code": "304: \thasInlineHosts := r.options.Hosts != \"\" && !fileutil.FileExists(r.options.Hosts) && !argumentHasStdin(r.options.Hosts)\n305: \tif hasStdin && !fileutil.FileExists(r.options.Hosts) && r.options.Domains == \"\" && !hasInlineHosts {\n306: \t\ttmpStdinFile, err := fileutil.GetTempFileName()\n307: \t\tif err != nil {\n308: \t\t\treturn err\n309: \t\t}\n310: \t\tr.tmpStdinFile = tmpStdinFile\n311: \n312: \t\tstdinFile, err := os.Create(r.tmpStdinFile)\n313: \t\tif err != nil {\n314: \t\t\treturn err\n315: \t\t}\n316: \t\tif _, err := io.Copy(stdinFile, os.Stdin); err != nil {\n317: \t\t\treturn err\n318: \t\t}\n319: \t\t_ = stdinFile.Close()\n320: \t\tdefer func() {\n321: \t\t\t_ = os.RemoveAll(r.tmpStdinFile)\n322: \t\t}()"
+      },
+      {
+        "file": "utils@v0.11.6/file/file.go",
+        "lines": "289-300",
+        "quoted_code": "289: // GetTempFileName generate a temporary file name\n290: func GetTempFileName() (string, error) {\n291: \ttmpfile, err := os.CreateTemp(\"\", \"\")\n292: \tif err != nil {\n293: \t\treturn \"\", err\n294: \t}\n295: \ttmpFileName := tmpfile.Name()\n296: \tif err := tmpfile.Close(); err != nil {\n297: \t\treturn tmpFileName, err\n298: \t}\n299: \terr = os.RemoveAll(tmpFileName)\n300: \treturn tmpFileName, err"
+      }
+    ],
+    "source": "Piped scan input and the filesystem entry in the temporary directory.",
+    "sink": "os.Create of a filename returned after its original file was deleted.",
+    "path": [
+      "GetTempFileName creates a safe temporary file",
+      "helper closes and deletes it, returning only its name",
+      "runner reopens that name with os.Create",
+      "stdin bytes are copied to the reopened path"
+    ],
+    "why_exploitable": "The create-delete-recreate gap allows a replacement symlink to redirect truncation and stdin writes where filesystem policy permits. os.Create also uses 0666 before umask, unlike CreateTemp's 0600, making scan input world-readable under umask 022.",
+    "preconditions": "Non-stream piped stdin path is used. Reading requires access to the temp directory under a permissive umask; redirecting writes additionally requires winning the gap and passing OS symlink protections. Linux protected_symlinks can block cross-user attacks in sticky directories.",
+    "challenge_verdict": "CONFIRMED unsafe sequence and controlled interleaving, not a measured natural race. Existing CreateTemp randomness was considered: deletion removes its atomic protection. Severity is conditional; same-user reproduction does not prove cross-user privilege escalation.",
+    "how_to_verify": "Run TestAuditTempRace: real helper returns a removed name; insert a symlink to a temporary victim, then reproduce os.Create. Keep the CreateTemp descriptor instead. Verify mode is 0600 and no reopen gap remains.",
+    "observed_at_utc": "2026-10-08T16:22:53.225841+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "--- internal/runner/runner.go\n+++ internal/runner/runner.go\n@@\n-\t\ttmpStdinFile, err := fileutil.GetTempFileName()\n+\t\tstdinFile, err := os.CreateTemp(\"\", \"dnsx-stdin-*\")\n \t\tif err != nil { return err }\n-\t\tr.tmpStdinFile = tmpStdinFile\n-\t\tstdinFile, err := os.Create(r.tmpStdinFile)\n-\t\tif err != nil { return err }\n+\t\tr.tmpStdinFile = stdinFile.Name()\n+\t\tdefer os.Remove(r.tmpStdinFile)\n+\t\tdefer stdinFile.Close()\n# Keep io.Copy and its error check; replace the later RemoveAll defer.\n"
+  },
+  {
+    "id": "F05",
+    "title": "Privileged CI actions are referenced by mutable tags",
+    "cwe": "CWE-829",
+    "severity": "Medium",
+    "category": "Supply-chain configuration risk",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": ".github/workflows/auto-merge.yaml",
+        "lines": "8-18",
+        "quoted_code": "8: permissions:\n9:   contents: write\n10:   pull-requests: write\n11: \n12: jobs:\n13:   auto-merge-dependabot:\n14:     runs-on: ubuntu-latest\n15:     if: ${{ github.event.workflow_run.conclusion == 'success' }}\n16:     steps:\n17:       - uses: projectdiscovery/actions/pr/approve@v1\n18:       - uses: projectdiscovery/actions/pr/merge@v1"
+      },
+      {
+        "file": ".github/workflows/release-binary.yml",
+        "lines": "13-24",
+        "quoted_code": "13:       - uses: actions/checkout@v4\n14:         with:\n15:           fetch-depth: 0\n16:       - uses: projectdiscovery/actions/setup/go@v1\n17:       - uses: projectdiscovery/actions/goreleaser@v1\n18:         with:\n19:           release: true\n20:         env:\n21:           GITHUB_TOKEN: \"${{ secrets.GITHUB_TOKEN }}\"\n22:           SLACK_WEBHOOK: \"${{ secrets.RELEASE_SLACK_WEBHOOK }}\"\n23:           DISCORD_WEBHOOK_ID: \"${{ secrets.DISCORD_WEBHOOK_ID }}\"\n24:           DISCORD_WEBHOOK_TOKEN: \"${{ secrets.DISCORD_WEBHOOK_TOKEN }}\""
+      },
+      {
+        "file": ".github/workflows/dockerhub-push.yml",
+        "lines": "24-29",
+        "quoted_code": "24:       - uses: docker/login-action@v3\n25:         with:\n26:           username: ${{ secrets.DOCKER_USERNAME }}\n27:           password: ${{ secrets.DOCKER_TOKEN }}\n28: \n29:       - uses: docker/build-push-action@v5"
+      }
+    ],
+    "source": "Remote third-party action code addressed by @v1/@v3/@v4/@v5.",
+    "sink": "GitHub Actions execution with write permissions or release/deployment secrets.",
+    "path": [
+      "Successful compatibility run can trigger auto-merge job",
+      "job has contents/pull-requests write",
+      "mutable projectdiscovery action tags select executable code",
+      "release and Docker jobs also execute tagged actions with secrets"
+    ],
+    "why_exploitable": "A moved or compromised action tag changes executed code without a reviewed workflow change. The auto-merge job explicitly has write permissions; release and Docker steps have sensitive credentials in their jobs. No action compromise was observed.",
+    "preconditions": "Attacker must control an action repository/tag or its publishing account, and the workflow must run. Actual token defaults and action behavior depend on repository settings and remote code not supplied.",
+    "challenge_verdict": "CONFIRMED references and privilege grants, not confirmed compromise. workflow_run alone was not treated as a fork-code takeover; external approve/merge internals and branch rules remain unverified.",
+    "how_to_verify": "Resolve each action version to a reviewed full 40-character commit SHA, pin it, and use automated reviewed updates. Run CI on an owned test repository and verify only intended permissions are available.",
+    "observed_at_utc": "2026-10-08T16:26:27.938886+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "No guessed SHAs are supplied. Replace each uses: owner/action@tag\nwith its independently verified full commit SHA (optionally comment\nthe release tag), starting with approve/merge and release/deploy jobs.\nSet permissions: contents: read by default; grant only the necessary\njob-specific write scopes. Review third-party action code before pinning.\n"
+  },
+  {
+    "id": "F06",
+    "title": "Docker publication is not bound to a successful release commit",
+    "cwe": "CWE-345 (artifact provenance)",
+    "severity": "Medium",
+    "category": "Release-integrity defect",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": ".github/workflows/dockerhub-push.yml",
+        "lines": "3-19",
+        "quoted_code": "3: on:\n4:   workflow_run:\n5:     workflows: [\"\ud83c\udf89 Release Binary\"]\n6:     types:\n7:       - completed\n8:   workflow_dispatch:\n9: \n10: jobs:\n11:   docker:\n12:     runs-on: ubuntu-latest-16-cores\n13:     steps:\n14:       - uses: actions/checkout@v4\n15: \n16:       - name: Get Github tag\n17:         id: meta\n18:         run: |\n19:           curl --silent \"https://api.github.com/repos/projectdiscovery/dnsx/releases/latest\" | jq -r .tag_name | xargs -I {} echo TAG={} >> $GITHUB_OUTPUT"
+      },
+      {
+        "file": ".github/workflows/dockerhub-push.yml",
+        "lines": "29-34",
+        "quoted_code": "29:       - uses: docker/build-push-action@v5\n30:         with:\n31:           context: .\n32:           platforms: linux/amd64,linux/arm64,linux/arm\n33:           push: true\n34:           tags: projectdiscovery/dnsx:latest,projectdiscovery/dnsx:${{ steps.meta.outputs.TAG }}"
+      }
+    ],
+    "source": "Completed release workflow, default checkout ref, and latest-release API tag.",
+    "sink": "Docker build and push tagged with independently fetched release metadata.",
+    "path": [
+      "Any completed release workflow triggers Docker job, including failure",
+      "checkout has no release-associated ref",
+      "latest tag is fetched separately",
+      "build uses current checkout and publishes latest + fetched tag"
+    ],
+    "why_exploitable": "The workflow can publish on a failed release run, and the built commit is not constrained to the commit represented by its version tag. That can overwrite a versioned image with unrelated source, undermining reproducibility and audit traceability.",
+    "preconditions": "Workflow deployed as supplied; a release run completes or manual dispatch starts the Docker workflow. Real mismatch depends on timing/default branch and repository release state.",
+    "challenge_verdict": "CONFIRMED missing success/ref binding in configuration; actual mislabelled image was not verified because GitHub/Docker deployment access was not provided. This is an integrity issue, not demonstrated attacker RCE.",
+    "how_to_verify": "In an owned test repository, simulate a failed release run and assert no push job runs. For success, assert image revision equals the triggering head_sha and tag metadata derives from that same immutable commit.",
+    "observed_at_utc": "2026-10-08T16:26:27.938886+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "--- .github/workflows/dockerhub-push.yml\n+++ .github/workflows/dockerhub-push.yml\n@@\n   docker:\n+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'\n@@\n       - uses: actions/checkout@v4\n+        with:\n+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}\n# Derive/validate the version tag from this checked-out commit, not\n# /releases/latest. Require an explicit tag for manual dispatch.\n"
+  },
+  {
+    "id": "F07",
+    "title": "Functional comparisons can report success for wrong results",
+    "cwe": "CWE-754 (quality control)",
+    "severity": "Low",
+    "category": "Audit/test-process defect",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": "cmd/functional-test/main.go",
+        "lines": "73-84",
+        "quoted_code": "73: \tmainOutput, err := testutils.RunDnsxBinaryAndGetResults(target, *mainDnsxBinary, debug, finalArgs)\n74: \tif err != nil {\n75: \t\treturn errors.Wrap(err, \"could not run dnsx main test\")\n76: \t}\n77: \tdevOutput, err := testutils.RunDnsxBinaryAndGetResults(target, *devDnsxBinary, debug, finalArgs)\n78: \tif err != nil {\n79: \t\treturn errors.Wrap(err, \"could not run dnsx dev test\")\n80: \t}\n81: \tif len(mainOutput) == len(devOutput) {\n82: \t\treturn nil\n83: \t}\n84: \treturn fmt.Errorf(\"%s main is not equal to %s dev\", mainOutput, devOutput)"
+      },
+      {
+        "file": "cmd/functional-test/run.sh",
+        "lines": "13-22",
+        "quoted_code": "13: \n14: echo \"::group::Building dnsx binary from current branch\"\n15: go build -o dnsx_dev$extension ../dnsx\n16: echo \"::endgroup::\"\n17: \n18: echo \"::group::Building latest release of dnsx\"\n19: go build -o dnsx$extension -v github.com/projectdiscovery/dnsx/cmd/dnsx\n20: echo \"::endgroup::\"\n21: \n22: echo 'Starting dnsx functional test'"
+      }
+    ],
+    "source": "Outputs of the supposed baseline and candidate programs.",
+    "sink": "Pass/fail comparison and baseline build.",
+    "path": [
+      "Both binaries are built from the current module checkout",
+      "test helper captures output from each",
+      "only slice lengths are compared",
+      "same-count but different content returns success"
+    ],
+    "why_exploitable": "A regression that produces incorrect results with the expected number of lines is accepted. In addition, the script labelled latest release builds the same local module path, not an independently selected release. This weakens confidence in existing functional-test passes.",
+    "preconditions": "Use of the provided functional harness. The same-checkout baseline follows normal Go module resolution from inside this module; no separate baseline download/ref is selected.",
+    "challenge_verdict": "CONFIRMED. Two harmless stubs printing EXPECTED and INCORRECT each produced one line; runIndividualTestCase returned success. The script was inspected, not run against real public DNS targets.",
+    "how_to_verify": "Run TestAuditSameLengthMismatch; after fixing comparison it should reject the mismatch. Build the baseline in a separate worktree at a verified release commit and assert its revision differs when expected.",
+    "observed_at_utc": "2026-10-08T16:22:45.346668+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "--- cmd/functional-test/main.go\n+++ cmd/functional-test/main.go\n@@\n-\tif len(mainOutput) == len(devOutput) {\n+\tsort.Strings(mainOutput)\n+\tsort.Strings(devOutput)\n+\tif slices.Equal(mainOutput, devOutput) {\n \t\treturn nil\n \t}\n# Add imports \"sort\" and \"slices\" (Go standard library).\n# Build baseline from a separate checkout of a verified release.\n"
+  },
+  {
+    "id": "F08",
+    "title": "Incomplete scans and output failures can appear successful",
+    "cwe": "CWE-252 / CWE-703",
+    "severity": "Medium",
+    "category": "Reliability and audit-integrity defect",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": "cmd/dnsx/dnsx.go",
+        "lines": "38-41",
+        "quoted_code": "38: \t// nolint:errcheck\n39: \tdnsxRunner.Run()\n40: \tdnsxRunner.Close()\n41: }"
+      },
+      {
+        "file": "internal/runner/options.go",
+        "lines": "279-289",
+        "quoted_code": "279: \t\tgologger.Fatal().Msgf(\"resp and resp-only can't be used at the same time\")\n280: \t}\n281: \n282: \tif options.OutputTemplate != \"\" && (options.JSON || options.Raw) {\n283: \t\tgologger.Fatal().Msgf(\"output-template can't be used with json or raw output\")\n284: \t}\n285: \n286: \tif options.Retries == 0 {\n287: \t\tgologger.Fatal().Msgf(\"retries must be at least 1\")\n288: \t}\n289: "
+      },
+      {
+        "file": "internal/runner/runner.go",
+        "lines": "621-630",
+        "quoted_code": "621: \t\tw = bufio.NewWriter(foutput)\n622: \t\tdefer func() {\n623: \t\t\t_ = w.Flush()\n624: \t\t}()\n625: \t}\n626: \tfor item := range r.outputchan {\n627: \t\tif foutput != nil {\n628: \t\t\t// uses a buffer to write to file\n629: \t\t\t_, _ = w.WriteString(item + \"\\n\")\n630: \t\t}"
+      },
+      {
+        "file": "internal/runner/runner.go",
+        "lines": "645-656",
+        "quoted_code": "645: \t\tgo r.InputWorkerStream()\n646: \t} else {\n647: \t\tgo r.InputWorker()\n648: \t}\n649: \n650: \tr.startOutputWorker()\n651: \t// resolve workers\n652: \tfor i := 0; i < r.options.Threads; i++ {\n653: \t\tr.wgresolveworkers.Add(1)\n654: \t\tgo r.worker()\n655: \t}\n656: }"
+      }
+    ],
+    "source": "Invalid/missing input, zero/negative worker count, and output write failures.",
+    "sink": "Discarded Run error, worker creation loop, buffered output flush/write.",
+    "path": [
+      "No-input prepareInput returns empty argument error",
+      "main discards dnsxRunner.Run return",
+      "Threads <= 0 starts no resolve workers without validation",
+      "HandleOutput discards WriteString and Flush errors"
+    ],
+    "why_exploitable": "Automation can receive exit status 0 for an empty-input failure or a run that resolves nothing. The actual output handler also returns normally when /dev/full rejects its deferred flush. That can cause incomplete or missing evidence to be mistaken for a completed audit.",
+    "preconditions": "No input, nonpositive -t, or an output filesystem error. The /dev/full reproduction ran only in the isolated test handler. A CLI /dev/full attempt did not obtain a DNS answer, so it was excluded as proof of output-loss behavior.",
+    "challenge_verdict": "CONFIRMED via actual CLI for no input and -t 0, both exit 0/no output; confirmed output-error discard via handler test. Negative retries/timeouts are not separately claimed without dependency validation analysis.",
+    "how_to_verify": "Re-run recorded no_input and zero_threads checks; both should return nonzero with an actionable message after fixing. Run TestAuditOutputErrorDiscarded with explicit error propagation and expect a failure signal.",
+    "observed_at_utc": "2026-10-08T16:23:53.716804+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "--- cmd/dnsx/dnsx.go\n+++ cmd/dnsx/dnsx.go\n@@\n-\t// nolint:errcheck\n-\tdnsxRunner.Run()\n+\tif err := dnsxRunner.Run(); err != nil {\n+\t\tdnsxRunner.Close()\n+\t\tgologger.Fatal().Msgf(\"Scan failed: %s\", err)\n+\t}\n--- internal/runner/options.go\n+++ internal/runner/options.go\n@@\n func (options *Options) validateOptions() {\n+\tif options.Threads <= 0 {\n+\t\tgologger.Fatal().Msg(\"threads must be at least 1\")\n+\t}\n# In HandleOutput, replace ignored WriteString/Flush results with\n# checked errors and propagate failure (or log Fatal) to the caller.\n"
+  },
+  {
+    "id": "F09",
+    "title": "Stream mode without stdin panics",
+    "cwe": "CWE-476",
+    "severity": "Low",
+    "category": "Local availability defect",
+    "status": "confirmed",
+    "confidence": "high",
+    "evidence": [
+      {
+        "file": "internal/runner/runner.go",
+        "lines": "233-247",
+        "quoted_code": "233: \tvar sc *bufio.Scanner\n234: \t// attempt to load list from file\n235: \tif fileutil.FileExists(r.options.Hosts) {\n236: \t\tf, err := os.Open(r.options.Hosts)\n237: \t\tif err != nil {\n238: \t\t\tgologger.Error().Msgf(\"Could not open hosts file '%s': %s\", r.options.Hosts, err)\n239: \t\t\treturn\n240: \t\t}\n241: \t\tdefer f.Close() //nolint:errcheck\n242: \t\tsc = bufio.NewScanner(f)\n243: \t} else if fileutil.HasStdin() {\n244: \t\tsc = bufio.NewScanner(os.Stdin)\n245: \t}\n246: \n247: \tfor sc.Scan() {"
+      },
+      {
+        "file": "internal/runner/options.go",
+        "lines": "330-340",
+        "quoted_code": "330: \t\t}\n331: \t\tif options.ShowStatistics {\n332: \t\t\tgologger.Fatal().Msgf(\"stats not supported in stream mode\")\n333: \t\t}\n334: \t}\n335: \n336: \tif options.AutoWildcard && options.WildcardDomain != \"\" {\n337: \t\tgologger.Fatal().Msgf(\"auto-wildcard and wildcard-domain can't be used at the same time\")\n338: \t}\n339: }\n340: "
+      }
+    ],
+    "source": "Stream invocation with no file input and no piped stdin.",
+    "sink": "sc.Scan() on an uninitialized *bufio.Scanner.",
+    "path": [
+      "-stream is accepted without requiring stdin",
+      "InputWorkerStream initializes sc only for file or available stdin",
+      "with stdin redirected from /dev/null neither branch sets sc",
+      "sc.Scan dereferences nil and process exits 2"
+    ],
+    "why_exploitable": "A routine invocation error crashes the process with a stack trace rather than a controlled input-validation error. This is not a remotely reachable service crash in the supplied architecture.",
+    "preconditions": "CLI is invoked with -stream and no piped input; normal CLI validation forbids a hosts flag in stream mode. A wrapper that allows this invocation can be disrupted.",
+    "challenge_verdict": "CONFIRMED. dnsx -duc -silent -nc -stream </dev/null exited 2 with panic at runner.go:247. Treated as Low local availability impact, not remote DoS.",
+    "how_to_verify": "Run that CLI command in a disposable environment. Patched code should produce a concise nonzero error without a panic; normal piped stream input must still work.",
+    "observed_at_utc": "2026-10-08T16:23:09+00:00",
+    "first_introduced": "Not established; this audit dates observation, not introduction.",
+    "fix_diff": "--- internal/runner/runner.go\n+++ internal/runner/runner.go\n@@\n \t} else if fileutil.HasStdin() {\n \t\tsc = bufio.NewScanner(os.Stdin)\n \t}\n+\tif sc == nil {\n+\t\tclose(r.workerchan)\n+\t\tgologger.Fatal().Msg(\"stream mode requires stdin\")\n+\t\treturn\n+\t}\n \tfor sc.Scan() {\n"
+  }
+]

@@ -1,0 +1,668 @@
+{
+  "time_utc": "2026-10-08T16:12:03.270712+00:00",
+  "archive_sha256": "dd876a7dc2ee7397edb7b5e8e8bc64ef66afec37db40f8ddf42f6ad9ea9d5ea4",
+  "entries": [
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/config",
+      "size": 301,
+      "type": 32768,
+      "sha256": "22ebea44c677590594161f8c5ca8fc638355d6b5067a444f1492d58014160acb"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/description",
+      "size": 73,
+      "type": 32768,
+      "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/HEAD",
+      "size": 20,
+      "type": 32768,
+      "sha256": "bda77d7d12a90332080071375095fb080d8cd2a6702e6ee44552863a0ca4317e"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/applypatch-msg.sample",
+      "size": 478,
+      "type": 32768,
+      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/commit-msg.sample",
+      "size": 1972,
+      "type": 32768,
+      "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/fsmonitor-watchman.sample",
+      "size": 4611,
+      "type": 32768,
+      "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/post-update.sample",
+      "size": 189,
+      "type": 32768,
+      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/pre-applypatch.sample",
+      "size": 424,
+      "type": 32768,
+      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/pre-commit.sample",
+      "size": 1649,
+      "type": 32768,
+      "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/pre-merge-commit.sample",
+      "size": 416,
+      "type": 32768,
+      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/pre-push.sample",
+      "size": 1374,
+      "type": 32768,
+      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/pre-rebase.sample",
+      "size": 4898,
+      "type": 32768,
+      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/pre-receive.sample",
+      "size": 544,
+      "type": 32768,
+      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/prepare-commit-msg.sample",
+      "size": 1492,
+      "type": 32768,
+      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/push-to-checkout.sample",
+      "size": 2783,
+      "type": 32768,
+      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/sendemail-validate.sample",
+      "size": 2308,
+      "type": 32768,
+      "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks/update.sample",
+      "size": 3650,
+      "type": 32768,
+      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/index",
+      "size": 5549,
+      "type": 32768,
+      "sha256": "ea96cd450e5f2466ca28a032acaeb88c4df37169ec29894af36b68b87b46c051"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/info/exclude",
+      "size": 240,
+      "type": 32768,
+      "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/logs/HEAD",
+      "size": 190,
+      "type": 32768,
+      "sha256": "963af2dec22a1344a58871819bb87f65f6ef8f0cc9017e987fe93f0cb18b3e5c"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/logs/refs/heads/dev",
+      "size": 190,
+      "type": 32768,
+      "sha256": "963af2dec22a1344a58871819bb87f65f6ef8f0cc9017e987fe93f0cb18b3e5c"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/logs/refs/remotes/origin/HEAD",
+      "size": 190,
+      "type": 32768,
+      "sha256": "963af2dec22a1344a58871819bb87f65f6ef8f0cc9017e987fe93f0cb18b3e5c"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/objects/pack/pack-78543854ed0aff519c15d2adf315c215a7840fd9.idx",
+      "size": 131412,
+      "type": 32768,
+      "sha256": "4ba0453e1b5af54ec66a117e6e5be5cda2416312e3ee62d8db71eb473f23bad5"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/objects/pack/pack-78543854ed0aff519c15d2adf315c215a7840fd9.pack",
+      "size": 16341452,
+      "type": 32768,
+      "sha256": "382d01164f01bd3a2eebcf9049266ec8ba36764b7ceb852a21542155d27c1594"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/objects/pack/pack-78543854ed0aff519c15d2adf315c215a7840fd9.rev",
+      "size": 18672,
+      "type": 32768,
+      "sha256": "6997173bf3147cc0a69d12efa56f01062cafdf188883ac2861fd252a26d5e585"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/packed-refs",
+      "size": 1892,
+      "type": 32768,
+      "sha256": "494aa83629f52f40a491b3a2ad23fef48182e4d92a272c777256d3bf6e826d51"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/refs/heads/dev",
+      "size": 41,
+      "type": 32768,
+      "sha256": "4167e119478a90256f084d639186da39acacb63ba5d00a9d62001f5924ad892f"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/refs/remotes/origin/HEAD",
+      "size": 29,
+      "type": 32768,
+      "sha256": "b0099158467f3461db97f236cfd30b07c7414af93bcfb78ad79b6d7eb9992b5c"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/dependabot.yml",
+      "size": 1308,
+      "type": 32768,
+      "sha256": "643bf1f43091fd5fddbe17d2eb087a03e3da09983d0860c44a52cfded46b16ff"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/ISSUE_TEMPLATE/config.yml",
+      "size": 569,
+      "type": 32768,
+      "sha256": "e251f0a7cefc2e424efd0c4ae64e20b77e9d6b1c98ffe2b73e2a80e0b84ccbe9"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/ISSUE_TEMPLATE/feature_request.md",
+      "size": 904,
+      "type": 32768,
+      "sha256": "34fc1dedcb63d1879f90b9e7547dbea2194e38e7a58a9cdbb3b9916f23def45d"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/ISSUE_TEMPLATE/issue-report.md",
+      "size": 1284,
+      "type": 32768,
+      "sha256": "8b65be7efa58f4854ea6056237afe9cb9a5dcc7a3f81797350a977f52de53ae8"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/release.yml",
+      "size": 354,
+      "type": 32768,
+      "sha256": "43e7df0e0f5a0a9370396297dda9ce500314902df055f0818515fe7db0f7deb4"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/auto-merge.yaml",
+      "size": 467,
+      "type": 32768,
+      "sha256": "193c2960b37744dff884cb4abbb321d00d84d770e598f5098af11b6cae70cb57"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/build-test.yml",
+      "size": 1207,
+      "type": 32768,
+      "sha256": "c13688ba2a21a4e107703dc439830f0ebd2567c2e3ce6abef2d6759b96a77534"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/codeql-analysis.yml",
+      "size": 623,
+      "type": 32768,
+      "sha256": "114304ba95ba84ec102cb5bc81f7aad4463128ef3e29edbae6582424785aa994"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/compat-checks.yaml",
+      "size": 417,
+      "type": 32768,
+      "sha256": "c7b956f5742f61f5b0fad679b8f46043ab6f2311110e80a295691a8df5a18d75"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/dockerhub-push.yml",
+      "size": 971,
+      "type": 32768,
+      "sha256": "9694d2d73001fedc29950a8c635c06385e77052de2982f0679324d0d8dc5531f"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/functional-test.yml",
+      "size": 625,
+      "type": 32768,
+      "sha256": "3e665a413abf080b11818ff2060b23ea5d5374a1edc22318180a1e84f86ceb51"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/release-binary.yml",
+      "size": 655,
+      "type": 32768,
+      "sha256": "bba2fba53362d4b2fb9341f0b1bb5ae141dda4dfb6af7dcc89056dfa5f937549"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/release-test.yml",
+      "size": 375,
+      "type": 32768,
+      "sha256": "e41858a8d0b48360551e532098f2c5e7d2b1681933e9c2130e9257fe4a2319dc"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows/stale.yaml",
+      "size": 1596,
+      "type": 32768,
+      "sha256": "bfa7a9a2eebc6fc34fd30d88e5abc889c4b2f570d98db53b99738cd0a405e576"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.gitignore",
+      "size": 259,
+      "type": 32768,
+      "sha256": "11c0815cb35375eddd2a6f162fa3d76034209a5da92e44529c6b1d6e22990c45"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.goreleaser.yml",
+      "size": 934,
+      "type": 32768,
+      "sha256": "4ab7451246dbedb28fc517f84aa7030a6b5dc74c560b43fe68bbc0a3a6eb0036"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/dnsx/dnsx.go",
+      "size": 938,
+      "type": 32768,
+      "sha256": "9d85fcf242cd924ba4d824863cad6f3e0f0fd37903ef117cc9aa8db369114ced"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/functional-test/main.go",
+      "size": 2066,
+      "type": 32768,
+      "sha256": "9b0d4434562d5ae029edfe2d00df1c4ea20356a31a6548b122b28c24443027e8"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/functional-test/run.sh",
+      "size": 659,
+      "type": 32768,
+      "sha256": "5d01c329140b1d79533d5662ae436657388f907dc42dd8aa73422c3d230fc303"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/functional-test/test-data/file.txt",
+      "size": 26,
+      "type": 32768,
+      "sha256": "006926c49196f9d372c65d918f05523b1858cfea5da71e7c3ca6f1e7a5e1dbfa"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/functional-test/testcases.txt",
+      "size": 1111,
+      "type": 32768,
+      "sha256": "14d21de710cec01626744d244a95d29b37b70ce63a95a1d975a26e9b8d78f4d3"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/integration-test/dns.go",
+      "size": 6362,
+      "type": 32768,
+      "sha256": "f9b6e7762ecdebfc83ee639ab8e00eddc7820c545a850817f8aea0497f82928f"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/integration-test/integration-test.go",
+      "size": 1354,
+      "type": 32768,
+      "sha256": "39c5d0e7f72151bbfbecc6d00653a3cb9e0c50c4026887f5714f1170ba9e54c8"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/Dockerfile",
+      "size": 366,
+      "type": 32768,
+      "sha256": "479b3eb51563d2e10b0714d9ec1f1e7b0498cab52153fbc9a7f6d7850e58475f"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/go.mod",
+      "size": 5566,
+      "type": 32768,
+      "sha256": "b171d50f2f6b9b760fc576eeb0f5c02b7ea78aeedbd9d5976b61f412be21ba18"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/go.sum",
+      "size": 39490,
+      "type": 32768,
+      "sha256": "0902b1131ce5c4c6722de69033b77c173765bf2e83c30afc2c7f4f453f6d0f5a"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/integration_tests/run.sh",
+      "size": 432,
+      "type": 32768,
+      "sha256": "996c81bdcd3e02288492e1e9f364e4ab2f869b8dca07d8a36152d3acbd6742e0"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/banner.go",
+      "size": 958,
+      "type": 32768,
+      "sha256": "8edc5244d033eb4b68dd728d3e0b9a9ed8175686d56bf9d0ff0a7b5f83c25318"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/doc.go",
+      "size": 69,
+      "type": 32768,
+      "sha256": "a839903c219bdb6212094d3c80c68b85470c15b20c0777f5cc4ff039240130f1"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/healthcheck.go",
+      "size": 1992,
+      "type": 32768,
+      "sha256": "ed544689a916d34d7f0afc9815877a899f18fcafc9429aa737429a545a3b1d2b"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/options.go",
+      "size": 16971,
+      "type": 32768,
+      "sha256": "357c66e08967aafcce31da974cf56d43e857e1b40d552f67b6cd5c6cd8e4e39c"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/output_template.go",
+      "size": 2584,
+      "type": 32768,
+      "sha256": "8c5fd6f063e828c59e7b62215c915982a05ab877041d36e910483ad78299eaa8"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/output_template_test.go",
+      "size": 2535,
+      "type": 32768,
+      "sha256": "2a505031fd7162c7b4b47d8c5df985c493a2ddbb8d36eeb99eabe5530d3a3ab0"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/resume.go",
+      "size": 128,
+      "type": 32768,
+      "sha256": "ac065216acacf569035addd2b8659972ab6e8d154a4ad198524b5f538b703afc"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/runner.go",
+      "size": 29965,
+      "type": 32768,
+      "sha256": "b6037a48c096bb1bd26079c6acf2a5161fe8ee6a3f02ff655347093ce8d67714"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/runner_test.go",
+      "size": 11169,
+      "type": 32768,
+      "sha256": "30ad9ffcd204b57f96d512f4befedb0e02c8137ac593ec0cda0762da3f62771d"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/tests/AS14421.txt",
+      "size": 3984,
+      "type": 32768,
+      "sha256": "f8c4435ac5243a45177bb572e327e97c60c845455f6e42d6213ac61cd0f24fde"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/tests/file_input.txt",
+      "size": 28,
+      "type": 32768,
+      "sha256": "5d695e3d7d91b13eff19e5a322f945aa78162efef5ce6da05e321f6c7804afa2"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/tests/stream_input.txt",
+      "size": 39,
+      "type": 32768,
+      "sha256": "7074b0e940c2f1d55f499eb7f562a043216101b81e166d4a400e941b55f8c625"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/util.go",
+      "size": 1293,
+      "type": 32768,
+      "sha256": "8b5f697ad980fb20ea8b6074d12681cf45a087e87b267d112029edd2354a2e57"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/wildcard.go",
+      "size": 6368,
+      "type": 32768,
+      "sha256": "0c39d5cee3ce900a71ea72d8efd2c7a1bbbd1c3ea344ef5efb080991d58a9f38"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/wildcard_test.go",
+      "size": 11429,
+      "type": 32768,
+      "sha256": "d5d26055003f7359deb22b65cb87385a9392212dfffe041095ffb09346196704"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/testutils/integration.go",
+      "size": 1567,
+      "type": 32768,
+      "sha256": "f653aac132ace33b06ac458f56b5ef27cfeb96e337fcef6368f3536b61188aa6"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/libs/dnsx/cdn.go",
+      "size": 1286,
+      "type": 32768,
+      "sha256": "9cd71c74ac612f272c87ae062164641387c63404dc5949a41f79186157238787"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/libs/dnsx/dnsx.go",
+      "size": 5298,
+      "type": 32768,
+      "sha256": "660354dca7e024d4f3270b0b7b56002aa3685e7557c3c772bad320730d3abff7"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/libs/dnsx/doc.go",
+      "size": 58,
+      "type": 32768,
+      "sha256": "ba0fac42057482d873e4ea40126278b3e48e678f8feee87b0978abf7ba0593b5"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/libs/dnsx/util.go",
+      "size": 668,
+      "type": 32768,
+      "sha256": "062a8ab07cf47eb4c9b57136ff7763b4d855b30cef68ac73c0604cd99d15afe5"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/LICENSE.md",
+      "size": 1100,
+      "type": 32768,
+      "sha256": "1c7f93769f9fb9f40c080d17e10464aa4c86943bca025b3841bdd03486472817"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/Makefile",
+      "size": 362,
+      "type": 32768,
+      "sha256": "61298bae7f2edecfb21094f244e7be7539e4a51f20ba27bd6559cfc2f2368a7b"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/MULLVAD.md",
+      "size": 1005,
+      "type": 32768,
+      "sha256": "caa72c054a1c28666c01e56b51fbb2ef34fbd41202718092e0884c42b789488e"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/README.md",
+      "size": 17016,
+      "type": 32768,
+      "sha256": "fdbf91f3702d0d279e6cccb3158bb922a72f44d48daf54f2d72f24d78ae1b0d6"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/SECURITY.md",
+      "size": 219,
+      "type": 32768,
+      "sha256": "67b1ffcf20000ba7be0d77a5de1380856390998cac20865fa566cb555a051b88"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/static/dnsx-logo.png",
+      "size": 20947,
+      "type": 32768,
+      "sha256": "abdf7c5ef50e7d740b96aad5a151b9ac75700de029a681a6b3dc6b51efe45b7d"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/static/dnsx-run.png",
+      "size": 281091,
+      "type": 32768,
+      "sha256": "62e506389bbe730d9814d4384f3c358914bc2ef1fe4d02ce5b69aa06dc800e3f"
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/logs/refs/remotes/origin",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/logs/refs/heads",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/logs/refs/remotes",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/refs/remotes/origin",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/logs/refs",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/objects/info",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/objects/pack",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/refs/heads",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/refs/remotes",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/refs/tags",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/functional-test/test-data",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner/tests",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/hooks",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/info",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/logs",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/objects",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git/refs",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/ISSUE_TEMPLATE",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github/workflows",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/dnsx",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/functional-test",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd/integration-test",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/runner",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal/testutils",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/libs/dnsx",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.git",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/.github",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/cmd",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/integration_tests",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/internal",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/libs",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx/static",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)/dnsx",
+      "size": 0,
+      "type": 16384
+    },
+    {
+      "path": "dnsx (loyd edition)",
+      "size": 0,
+      "type": 16384
+    }
+  ]
+}

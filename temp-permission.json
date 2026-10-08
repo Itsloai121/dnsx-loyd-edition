@@ -1,0 +1,5 @@
+{
+  "umask": "022",
+  "mode": "0o644",
+  "note": "OS-level reproduction of Go os.Create mode, not capture of live runner temporary file"
+}

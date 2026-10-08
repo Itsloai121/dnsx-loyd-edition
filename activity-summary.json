@@ -1,0 +1,43 @@
+{
+  "prepared_at_utc": "2026-10-08T16:32:58.108182+00:00",
+  "input_received_local": "2026-10-08T19:11:09.620+03:00",
+  "input_received_utc": "2026-10-08T16:11:09.620Z",
+  "extraction_completed": "2026-10-08T16:12:03.270712+00:00",
+  "toolchain": "go1.26.9",
+  "toolchain_sha256": "42d158b4d8f7b61ac0a830567c940a86098fb7aac52e467a5ebec03ef5cc2f8d",
+  "events": [
+    {
+      "log": "tests.jsonl",
+      "first_event": "2026-10-08T16:22:54.954279153Z",
+      "last_event": "2026-10-08T16:22:55.257296711Z",
+      "top_level_outcomes": {
+        "pass": 24
+      }
+    },
+    {
+      "log": "security-tests.jsonl",
+      "first_event": "2026-10-08T16:22:45.186877822Z",
+      "last_event": "2026-10-08T16:22:56.001474895Z",
+      "top_level_outcomes": {
+        "pass": 7
+      }
+    },
+    {
+      "log": "output-error-test.jsonl",
+      "first_event": "2026-10-08T16:24:16.689376493Z",
+      "last_event": "2026-10-08T16:24:16.815706366Z",
+      "top_level_outcomes": {
+        "pass": 1
+      }
+    },
+    {
+      "log": "race-tests.jsonl",
+      "first_event": "2026-10-08T16:24:37.275455693Z",
+      "last_event": "2026-10-08T16:24:38.880350092Z",
+      "top_level_outcomes": {
+        "pass": 25,
+        "skip": 1
+      }
+    }
+  ]
+}

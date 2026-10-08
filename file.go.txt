@@ -1,0 +1,13 @@
+289: // GetTempFileName generate a temporary file name
+290: func GetTempFileName() (string, error) {
+291: 	tmpfile, err := os.CreateTemp("", "")
+292: 	if err != nil {
+293: 		return "", err
+294: 	}
+295: 	tmpFileName := tmpfile.Name()
+296: 	if err := tmpfile.Close(); err != nil {
+297: 		return tmpFileName, err
+298: 	}
+299: 	err = os.RemoveAll(tmpFileName)
+300: 	return tmpFileName, err
+301: }

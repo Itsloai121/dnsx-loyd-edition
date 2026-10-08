@@ -1,0 +1,121 @@
+F01 DNS-over-HTTPS accepts untrusted certificates
+--- retryabledns/client.go
++++ retryabledns/client.go
+@@
+-		doh.WithInsecureSkipVerify(),
+
+
+F02 Automatic version-check client disables TLS verification
+--- utils/update/update.go
++++ utils/update/update.go
+@@
+-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
++			TLSClientConfig: &tls.Config{InsecureSkipVerify: false},
+
+
+F03 Test helpers turn target and arguments into shell code
+--- internal/testutils/integration.go
++++ internal/testutils/integration.go
+@@
+-	cmd := exec.Command("bash", "-c")
+-	cmdLine := fmt.Sprintf(`echo %s | %s `, target, dnsxBinary)
+-	cmdLine += strings.Join(args, " ")
++	argv := append([]string{}, args...)
++	mode := "-silent"
++	if debug { mode = "-debug" }
++	argv = append(argv, mode)
++	cmd := exec.Command(dnsxBinary, argv...)
++	cmd.Stdin = strings.NewReader(target + "\n")
++	if debug { cmd.Stderr = os.Stderr }
+# Remove the old cmdLine/debug/Args block; apply the same pattern
+# to RunDnsxAndGetResults using binary "./dnsx". Remove fmt import.
+
+
+F04 Stdin temporary-file creation loses atomicity and privacy
+--- internal/runner/runner.go
++++ internal/runner/runner.go
+@@
+-		tmpStdinFile, err := fileutil.GetTempFileName()
++		stdinFile, err := os.CreateTemp("", "dnsx-stdin-*")
+ 		if err != nil { return err }
+-		r.tmpStdinFile = tmpStdinFile
+-		stdinFile, err := os.Create(r.tmpStdinFile)
+-		if err != nil { return err }
++		r.tmpStdinFile = stdinFile.Name()
++		defer os.Remove(r.tmpStdinFile)
++		defer stdinFile.Close()
+# Keep io.Copy and its error check; replace the later RemoveAll defer.
+
+
+F05 Privileged CI actions are referenced by mutable tags
+No guessed SHAs are supplied. Replace each uses: owner/action@tag
+with its independently verified full commit SHA (optionally comment
+the release tag), starting with approve/merge and release/deploy jobs.
+Set permissions: contents: read by default; grant only the necessary
+job-specific write scopes. Review third-party action code before pinning.
+
+
+F06 Docker publication is not bound to a successful release commit
+--- .github/workflows/dockerhub-push.yml
++++ .github/workflows/dockerhub-push.yml
+@@
+   docker:
++    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+@@
+       - uses: actions/checkout@v4
++        with:
++          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+# Derive/validate the version tag from this checked-out commit, not
+# /releases/latest. Require an explicit tag for manual dispatch.
+
+
+F07 Functional comparisons can report success for wrong results
+--- cmd/functional-test/main.go
++++ cmd/functional-test/main.go
+@@
+-	if len(mainOutput) == len(devOutput) {
++	sort.Strings(mainOutput)
++	sort.Strings(devOutput)
++	if slices.Equal(mainOutput, devOutput) {
+ 		return nil
+ 	}
+# Add imports "sort" and "slices" (Go standard library).
+# Build baseline from a separate checkout of a verified release.
+
+
+F08 Incomplete scans and output failures can appear successful
+--- cmd/dnsx/dnsx.go
++++ cmd/dnsx/dnsx.go
+@@
+-	// nolint:errcheck
+-	dnsxRunner.Run()
++	if err := dnsxRunner.Run(); err != nil {
++		dnsxRunner.Close()
++		gologger.Fatal().Msgf("Scan failed: %s", err)
++	}
+--- internal/runner/options.go
++++ internal/runner/options.go
+@@
+ func (options *Options) validateOptions() {
++	if options.Threads <= 0 {
++		gologger.Fatal().Msg("threads must be at least 1")
++	}
+# In HandleOutput, replace ignored WriteString/Flush results with
+# checked errors and propagate failure (or log Fatal) to the caller.
+
+
+F09 Stream mode without stdin panics
+--- internal/runner/runner.go
++++ internal/runner/runner.go
+@@
+ 	} else if fileutil.HasStdin() {
+ 		sc = bufio.NewScanner(os.Stdin)
+ 	}
++	if sc == nil {
++		close(r.workerchan)
++		gologger.Fatal().Msg("stream mode requires stdin")
++		return
++	}
+ 	for sc.Scan() {
+
+

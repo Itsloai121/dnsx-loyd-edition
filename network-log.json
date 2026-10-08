@@ -1,0 +1,26 @@
+[
+  {
+    "url": "https://go.dev/dl/?mode=json",
+    "file": "go-releases.json",
+    "status": "ok",
+    "bytes": 22807
+  },
+  {
+    "url": "https://api.osv.dev/v1/querybatch",
+    "status": "ok",
+    "module_count": 105,
+    "matched_modules": 3
+  },
+  {
+    "url": "https://proxy.golang.org/github.com/projectdiscovery/utils/@v/v0.11.6.zip",
+    "file": "utils.zip",
+    "status": "ok",
+    "bytes": 363649
+  },
+  {
+    "url": "https://proxy.golang.org/github.com/projectdiscovery/retryabledns/@v/v1.0.116.zip",
+    "file": "retryabledns.zip",
+    "status": "ok",
+    "bytes": 47878
+  }
+]
